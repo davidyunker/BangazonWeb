@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
@@ -31,9 +33,14 @@ namespace BangazonWeb.Controllers
             }
 
             var product = await context.Product
+<<<<<<< HEAD
                     .Include(s => s.Customer)
                     // this is a way to access data on a foreign key 
                     .SingleOrDefaultAsync(m => m.ProductId == id);
+=======
+                    .Include(prod => prod.Customer)
+                    .SingleOrDefaultAsync(prod => prod.ProductId == id);
+>>>>>>> 78808136c97da3bfc38615e1aab3a8be2e646ef8
 
             // If product not found, return 404
             if (product == null)
@@ -44,12 +51,48 @@ namespace BangazonWeb.Controllers
             return View(product);
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewData["ProductTypeId"] = context.ProductType
+                                       .OrderBy(l => l.Label)
+                                       .AsEnumerable()
+                                       .Select(li => new SelectListItem { 
+                                           Text = li.Label,
+                                           Value = li.ProductTypeId.ToString()
+                                        });
+
+            ViewData["CustomerId"] = context.Customer
+                                       .OrderBy(l => l.LastName)
+                                       .AsEnumerable()
+                                       .Select(li => new SelectListItem { 
+                                           Text = $"{li.FirstName} {li.LastName}",
+                                           Value = li.CustomerId.ToString()
+                                        });
+
+            return View(); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Add(product);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
+
         public IActionResult Type([FromRoute]int id)
         {
             ViewData["Message"] = "Your contact page.";
 
             return View();
         }
+
 
         public IActionResult Error()
         {
