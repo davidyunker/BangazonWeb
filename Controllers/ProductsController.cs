@@ -16,13 +16,13 @@ namespace BangazonWeb.Controllers
         {
             context = ctx;
         }
-
+// context was copied from our previous bangazon project 
         public async Task<IActionResult> Index()
         {
             return View(await context.Product.ToListAsync());
         }
 
-        public async Task<IActionResult> Detail([FromRoute]int? id)
+            public async Task<IActionResult> Detail([FromRoute]int? id)
         {
             // If no id was in the route, return 404
             if (id == null)
@@ -32,6 +32,7 @@ namespace BangazonWeb.Controllers
 
             var product = await context.Product
                     .Include(s => s.Customer)
+                    // this is a way to access data on a foreign key 
                     .SingleOrDefaultAsync(m => m.ProductId == id);
 
             // If product not found, return 404

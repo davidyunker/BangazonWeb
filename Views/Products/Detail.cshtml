@@ -7,13 +7,17 @@
 <h2>@Html.DisplayFor(model => model.Title)</h2>
 
 <div class="row">
+    <!--use model in this instance because it's one thing -->
     <div class="col-md-3">@Html.DisplayFor(model => model.Description)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.Price)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.DateCreated)</div>
     <div class="col-md-3"><a asp-action="Purchase" asp-route-id="@Model.ProductId">Purchase</a></div>
+    <!--route-id = puts the product Id in the route/url -->
+    <!--asp-action maps hyperlinks to methods -->
 </div>
 
 <div>
+    <!--@Html.DisplayFor needs a callback function. This thing formats data. @Html.DisplayNameFor takes the category as well-->
     Seller: @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)
 </div>
 
