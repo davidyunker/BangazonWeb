@@ -33,14 +33,10 @@ namespace BangazonWeb.Controllers
             }
 
             var product = await context.Product
-<<<<<<< HEAD
-                    .Include(s => s.Customer)
-                    // this is a way to access data on a foreign key 
-                    .SingleOrDefaultAsync(m => m.ProductId == id);
-=======
+
                     .Include(prod => prod.Customer)
+                    // this is a way to access data on a foreign key 
                     .SingleOrDefaultAsync(prod => prod.ProductId == id);
->>>>>>> 78808136c97da3bfc38615e1aab3a8be2e646ef8
 
             // If product not found, return 404
             if (product == null)
